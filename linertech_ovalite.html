@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LinerTech">
+<meta name="theme-color" content="#0a1628">
+<title>LinerTech · Ovalité</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg0:       #060e1a;
+  --bg1:       #0a1628;
+  --bg2:       #0f1f38;
+  --bg3:       #1a2744;
+  --bg4:       #1e3358;
+  --border:    #1e4d8c;
+  --border2:   #2a5fa8;
+  --blue:      #4a9eff;
+  --blue-dim:  #2563a8;
+  --violet:    #7c3aed;
+  --violet2:   #a855f7;
+  --violet-dim:#4a1d96;
+  --white:     #ffffff;
+  --text:      #ccd9ec;
+  --muted:     #5a7da8;
+  --mono:      'Share Tech Mono', monospace;
+  --cond:      'Barlow Condensed', sans-serif;
+  --body:      'Barlow', sans-serif;
+  --r:         10px;
+}
+
+* { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background: var(--bg0);
+  color: var(--text);
+  font-family: var(--body);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────────────── */
+header {
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  padding: env(safe-area-inset-top, 0px) 0 0;
+  position: sticky; top: 0; z-index: 100;
+  overflow: hidden;
+}
+.header-inner {
+  display: flex; align-items: center;
+  padding: 12px 16px 10px;
+  gap: 14px;
+  position: relative;
+}
+/* Purple vertical bar — Concept B signature */
+.header-inner::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background: linear-gradient(180deg, var(--violet2), var(--violet));
+}
+
+/* Pipe ring logo — Concept A */
+.pipe-ring {
+  flex-shrink: 0;
+  width: 42px; height: 42px; position: relative;
+}
+.pipe-ring svg { width: 100%; height: 100%; }
+
+.header-text {}
+.header-text .brand {
+  font-family: var(--cond);
+  font-size: 20px; font-weight: 900;
+  letter-spacing: 1.5px; line-height: 1;
+  color: var(--white);
+}
+.header-text .brand span { color: var(--blue); }
+.header-text .sub {
+  font-family: var(--cond);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 3.5px; color: var(--muted);
+  text-transform: uppercase; margin-top: 3px;
+}
+
+.header-badge {
+  margin-left: auto;
+  background: var(--violet-dim);
+  border: 1px solid var(--violet);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-family: var(--mono); font-size: 9px;
+  color: var(--violet2); letter-spacing: 1px;
+  display: flex; align-items: center; gap: 5px;
+}
+.pulse-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--violet2); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+
+/* ── TABS ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 74px; z-index: 99;
+}
+.tab {
+  flex:1; padding: 0 8px;
+  height: 48px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--cond); font-weight: 700; font-size: 14px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+.tab svg { width:16px; height:16px; opacity:.5; transition: opacity .2s; }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab.active svg { opacity: 1; }
+.tab:nth-child(2).active { color: var(--violet2); border-bottom-color: var(--violet2); }
+
+/* ── MAIN ───────────────────────────────────────────────────────────────── */
+main { padding: 14px 14px 40px; }
+.panel { display: none; }
+.panel.active { display: block; animation: slideUp .22s ease; }
+@keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+/* ── MODE PILLS ─────────────────────────────────────────────────────────── */
+.mode-bar {
+  display: flex; gap: 6px; margin-bottom: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 5px;
+}
+.mode-pill {
+  flex:1; padding: 9px 4px;
+  border-radius: 7px;
+  background: transparent; border: none;
+  font-family: var(--cond); font-weight: 700; font-size: 12px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.mode-pill .pill-icon { font-size: 16px; line-height:1; }
+.mode-pill.active {
+  background: var(--bg4);
+  color: var(--blue);
+  box-shadow: 0 0 14px #4a9eff22;
+}
+#panel-flex .mode-pill.active {
+  color: var(--violet2);
+  box-shadow: 0 0 14px #a855f722;
+}
+
+/* ── CARD ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+}
+/* Blue left accent stripe */
+.card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px;
+  background: linear-gradient(180deg, var(--blue), var(--blue-dim));
+}
+#panel-flex .card::before {
+  background: linear-gradient(180deg, var(--violet2), var(--violet));
+}
+
+.card-head {
+  padding: 11px 14px 10px 18px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-head h3 {
+  font-family: var(--cond); font-weight: 700;
+  font-size: 12px; letter-spacing: 2.5px;
+  color: var(--blue); text-transform: uppercase;
+}
+#panel-flex .card-head h3 { color: var(--violet2); }
+
+.formula-chip {
+  margin-left: auto;
+  font-family: var(--mono); font-size: 9px;
+  color: var(--muted); background: var(--bg1);
+  padding: 3px 8px; border-radius: 5px;
+  border: 1px solid var(--border);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.card-body { padding: 14px 14px 14px 18px; }
+
+/* ── FIELD ──────────────────────────────────────────────────────────────── */
+.field { margin-bottom: 13px; }
+.field label {
+  display:block; font-family: var(--cond); font-weight: 600;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+.field label em {
+  font-style: normal; font-family: var(--mono);
+  color: var(--blue); font-size: 11px;
+}
+#panel-flex .field label em { color: var(--violet2); }
+
+.inp-row {
+  display: flex; align-items: stretch;
+  background: var(--bg0);
+  border: 1.5px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  transition: border-color .15s, box-shadow .15s;
+}
+.inp-row:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #4a9eff18;
+}
+#panel-flex .inp-row:focus-within {
+  border-color: var(--violet2);
+  box-shadow: 0 0 0 3px #a855f718;
+}
+.inp-row input {
+  flex:1; background:none; border:none; outline:none;
+  color: var(--white); font-family: var(--mono); font-size: 20px;
+  padding: 11px 13px;
+  -webkit-appearance:none;
+}
+.inp-row input::placeholder { color: #1e3a58; }
+.inp-unit {
+  padding: 0 13px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  border-left: 1px solid var(--border);
+  background: var(--bg3);
+  display: flex; align-items: center;
+  letter-spacing: 1px;
+}
+
+/* ── RESULT ─────────────────────────────────────────────────────────────── */
+.result-box {
+  background: var(--bg0);
+  border: 1.5px solid var(--blue);
+  border-radius: 9px;
+  padding: 12px 14px;
+  position: relative; overflow: hidden;
+  margin-top: 2px;
+}
+.result-box::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+#panel-flex .result-box {
+  border-color: var(--violet);
+}
+#panel-flex .result-box::after {
+  background: linear-gradient(90deg, transparent, var(--violet2), transparent);
+}
+
+.result-label {
+  font-family: var(--cond); font-weight: 600;
+  font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 5px;
+}
+.result-value {
+  font-family: var(--mono); font-size: 30px;
+  color: var(--blue); line-height: 1;
+  display: flex; align-items: baseline; gap: 7px;
+}
+#panel-flex .result-value { color: var(--violet2); }
+.result-value .ru { font-size: 13px; color: var(--muted); }
+.result-value .dash { color: var(--bg4); font-size: 22px; }
+
+/* UV glow on result when has value */
+.result-box.has-value {
+  box-shadow: 0 0 20px #4a9eff18;
+}
+#panel-flex .result-box.has-value {
+  box-shadow: 0 0 20px #a855f718;
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────────────────────── */
+.divider {
+  display:flex; align-items:center; gap:10px;
+  margin: 4px 0 14px;
+}
+.divider::before,.divider::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+.divider::after { transform: scaleX(-1); }
+.divider span {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--muted); letter-spacing: 2px;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────────────────────── */
+.footer {
+  margin-top: 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.footer-logo {
+  font-family: var(--cond); font-weight: 900;
+  font-size: 13px; letter-spacing: 2px; color: var(--bg4);
+}
+.footer-logo span { color: var(--blue-dim); }
+.footer-v {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--bg4); letter-spacing: 1px;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg0); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <!-- Pipe ring SVG — Concept A inspired -->
+    <div class="pipe-ring">
+      <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="21" cy="21" r="17" stroke="#1e4d8c" stroke-width="7"/>
+        <circle cx="21" cy="21" r="17" stroke="#4a9eff" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <circle cx="21" cy="21" r="9" fill="#7c3aed" opacity="0.25"/>
+        <circle cx="21" cy="21" r="5" fill="#a855f7" opacity="0.55"/>
+        <circle cx="21" cy="21" r="2" fill="#a855f7"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <div class="brand">LINER<span>TECH</span></div>
+      <div class="sub">Calculateur Ovalité</div>
+    </div>
+    <div class="header-badge">
+      <div class="pulse-dot"></div>UV
+    </div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" id="tab-rigid" onclick="switchTab('rigid')">
+    <svg viewBox="0 0 16 16" fill="none">
+      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+    Rigide
+  </div>
+  <div class="tab" id="tab-flex" onclick="switchTab('flex')">
+    <svg viewBox="0 0 16 16" fill="none">
+      <ellipse cx="8" cy="8" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/>
+      <ellipse cx="8" cy="8" rx="3.5" ry="2.5" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+    Flexible
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════ PANEL RIGIDE ════════════════════════════════════════════════ -->
+<div class="panel active" id="panel-rigid">
+
+  <div class="mode-bar">
+    <button class="mode-pill active" id="r-btn-direct" onclick="setMode('r','direct')">
+      <span class="pill-icon">▶</span>Direct
+    </button>
+    <button class="mode-pill" id="r-btn-invA" onclick="setMode('r','invA')">
+      <span class="pill-icon">◀ₐ</span>→ D_min
+    </button>
+    <button class="mode-pill" id="r-btn-invB" onclick="setMode('r','invB')">
+      <span class="pill-icon">◀ᵦ</span>→ D
+    </button>
+  </div>
+
+  <!-- DIRECT -->
+  <div id="r-direct">
+    <div class="card">
+      <div class="card-head">
+        <h3>Calcul Direct</h3>
+        <div class="formula-chip">Ov₀ = (D−D_min)/D</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre nominal <em>D</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-d-D" inputmode="decimal" placeholder="1000" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Diamètre minimum <em>D_min</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-d-Dmin" inputmode="decimal" placeholder="985" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="result-box" id="r-d-box">
+          <div class="result-label">➜ Ovalité Ov₀</div>
+          <div class="result-value" id="r-d-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVERSE A -->
+  <div id="r-invA" style="display:none">
+    <div class="card">
+      <div class="card-head">
+        <h3>Inverse A — D_min</h3>
+        <div class="formula-chip">D_min = D×(1−Ov₀)</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre nominal <em>D</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-ia-D" inputmode="decimal" placeholder="1000" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Ovalité <em>Ov₀ (%)</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-ia-ov" inputmode="decimal" placeholder="1.5" step="0.001" oninput="calc()">
+            <div class="inp-unit">%</div>
+          </div>
+        </div>
+        <div class="result-box" id="r-ia-box">
+          <div class="result-label">➜ Diamètre min D_min</div>
+          <div class="result-value" id="r-ia-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVERSE B -->
+  <div id="r-invB" style="display:none">
+    <div class="card">
+      <div class="card-head">
+        <h3>Inverse B — D nominal</h3>
+        <div class="formula-chip">D = D_min/(1−Ov₀)</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre minimum <em>D_min</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-ib-Dmin" inputmode="decimal" placeholder="985" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Ovalité <em>Ov₀ (%)</em></label>
+          <div class="inp-row">
+            <input type="number" id="r-ib-ov" inputmode="decimal" placeholder="1.5" step="0.001" oninput="calc()">
+            <div class="inp-unit">%</div>
+          </div>
+        </div>
+        <div class="result-box" id="r-ib-box">
+          <div class="result-label">➜ Diamètre nominal D</div>
+          <div class="result-value" id="r-ib-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">LINER<span>TECH</span></div>
+    <div class="footer-v">v2.0 · RIGIDE</div>
+  </div>
+
+</div>
+
+<!-- ══════════ PANEL FLEXIBLE ══════════════════════════════════════════════ -->
+<div class="panel" id="panel-flex">
+
+  <div class="mode-bar">
+    <button class="mode-pill active" id="f-btn-direct" onclick="setMode('f','direct')">
+      <span class="pill-icon">▶</span>Direct
+    </button>
+    <button class="mode-pill" id="f-btn-invA" onclick="setMode('f','invA')">
+      <span class="pill-icon">◀ₐ</span>→ D_min
+    </button>
+    <button class="mode-pill" id="f-btn-invB" onclick="setMode('f','invB')">
+      <span class="pill-icon">◀ᵦ</span>→ D_max
+    </button>
+  </div>
+
+  <!-- DIRECT -->
+  <div id="f-direct">
+    <div class="card">
+      <div class="card-head">
+        <h3>Calcul Direct</h3>
+        <div class="formula-chip">OvE₀=(D_max−D_min)/(D_max+D_min)</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre max <em>D_max</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-d-Dmax" inputmode="decimal" placeholder="1010" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Diamètre min <em>D_min</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-d-Dmin" inputmode="decimal" placeholder="990" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="result-box" id="f-d-box">
+          <div class="result-label">➜ Ovalité OvE₀</div>
+          <div class="result-value" id="f-d-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVERSE A -->
+  <div id="f-invA" style="display:none">
+    <div class="card">
+      <div class="card-head">
+        <h3>Inverse A — D_min</h3>
+        <div class="formula-chip">D_min=D_max×(1−OvE₀)/(1+OvE₀)</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre max <em>D_max</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-ia-Dmax" inputmode="decimal" placeholder="1010" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Ovalité <em>OvE₀ (%)</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-ia-ov" inputmode="decimal" placeholder="1.0" step="0.001" oninput="calc()">
+            <div class="inp-unit">%</div>
+          </div>
+        </div>
+        <div class="result-box" id="f-ia-box">
+          <div class="result-label">➜ Diamètre min D_min</div>
+          <div class="result-value" id="f-ia-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVERSE B -->
+  <div id="f-invB" style="display:none">
+    <div class="card">
+      <div class="card-head">
+        <h3>Inverse B — D_max</h3>
+        <div class="formula-chip">D_max=D_min×(1+OvE₀)/(1−OvE₀)</div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Diamètre min <em>D_min</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-ib-Dmin" inputmode="decimal" placeholder="990" oninput="calc()">
+            <div class="inp-unit">mm</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Ovalité <em>OvE₀ (%)</em></label>
+          <div class="inp-row">
+            <input type="number" id="f-ib-ov" inputmode="decimal" placeholder="1.0" step="0.001" oninput="calc()">
+            <div class="inp-unit">%</div>
+          </div>
+        </div>
+        <div class="result-box" id="f-ib-box">
+          <div class="result-label">➜ Diamètre max D_max</div>
+          <div class="result-value" id="f-ib-res"><span class="dash">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">LINER<span>TECH</span></div>
+    <div class="footer-v">v2.0 · FLEXIBLE</div>
+  </div>
+
+</div>
+</main>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────
+const state = { rigid: 'direct', flex: 'direct' };
+
+// ── Tab switch ────────────────────────────────────────────────────────────
+function switchTab(t) {
+  ['rigid','flex'].forEach(p => {
+    document.getElementById('panel-'+p).classList.toggle('active', p===t);
+    document.getElementById('tab-'+p).classList.toggle('active', p===t);
+  });
+  calc();
+}
+
+// ── Mode switch ───────────────────────────────────────────────────────────
+function setMode(p, m) {
+  const panel = p==='r' ? 'rigid' : 'flex';
+  ['direct','invA','invB'].forEach(mode => {
+    document.getElementById(`${p}-${mode}`).style.display = mode===m ? 'block' : 'none';
+    document.getElementById(`${p}-btn-${mode}`).classList.toggle('active', mode===m);
+  });
+  state[panel] = m;
+  calc();
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function v(id) {
+  const n = parseFloat(document.getElementById(id)?.value);
+  return isNaN(n) ? null : n;
+}
+
+function render(boxId, resId, value, unit) {
+  const box = document.getElementById(boxId);
+  const res = document.getElementById(resId);
+  if (value === null) {
+    res.innerHTML = '<span class="dash">—</span>';
+    box.classList.remove('has-value');
+  } else {
+    res.innerHTML = `<span>${value}</span><span class="ru">${unit}</span>`;
+    box.classList.add('has-value');
+  }
+}
+
+function pct(v) { return (v*100).toFixed(3) + ' %'; }
+function mm(v)  { return v.toFixed(2); }
+
+// ── Calculations ──────────────────────────────────────────────────────────
+function calc() {
+  // Rigid
+  const D_rd   = v('r-d-D'),    Dmin_rd  = v('r-d-Dmin');
+  const D_ia   = v('r-ia-D'),   ov_ia    = v('r-ia-ov');
+  const Dmin_ib= v('r-ib-Dmin'),ov_ib    = v('r-ib-ov');
+
+  render('r-d-box','r-d-res',
+    (D_rd && Dmin_rd && D_rd!==0) ? pct((D_rd-Dmin_rd)/D_rd) : null, '');
+  render('r-ia-box','r-ia-res',
+    (D_ia && ov_ia!==null) ? mm(D_ia*(1-ov_ia/100)) : null, 'mm');
+  render('r-ib-box','r-ib-res',
+    (Dmin_ib && ov_ib!==null && ov_ib<100) ? mm(Dmin_ib/(1-ov_ib/100)) : null, 'mm');
+
+  // Flex
+  const Dmax_fd  = v('f-d-Dmax'), Dmin_fd  = v('f-d-Dmin');
+  const Dmax_ia  = v('f-ia-Dmax'),ov_fia   = v('f-ia-ov');
+  const Dmin_ib2 = v('f-ib-Dmin'),ov_fib   = v('f-ib-ov');
+
+  render('f-d-box','f-d-res',
+    (Dmax_fd && Dmin_fd && (Dmax_fd+Dmin_fd)!==0)
+      ? pct((Dmax_fd-Dmin_fd)/(Dmax_fd+Dmin_fd)) : null, '');
+
+  const rIA = ov_fia!==null ? ov_fia/100 : null;
+  render('f-ia-box','f-ia-res',
+    (Dmax_ia && rIA!==null) ? mm(Dmax_ia*(1-rIA)/(1+rIA)) : null, 'mm');
+
+  const rIB = ov_fib!==null ? ov_fib/100 : null;
+  render('f-ib-box','f-ib-res',
+    (Dmin_ib2 && rIB!==null && rIB<1) ? mm(Dmin_ib2*(1+rIB)/(1-rIB)) : null, 'mm');
+}
+</script>
+</body>
+</html>
